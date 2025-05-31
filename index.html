@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HerHealth AI - Cervical Cancer Risk Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-heart"></i>
+                <span>HerHealth AI</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link" onclick="showPage('home')">Home</a>
+                <a href="#" class="nav-link" onclick="showPage('assessment')">Assessment</a>
+                <a href="#" class="nav-link" onclick="showPage('data-tools')">Data Tools</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h1>Welcome to <span class="highlight">HerHealth AI</span></h1>
+                    <p class="hero-subtitle">Predict Your Cervical Cancer Risk with Confidence</p>
+                    <p class="hero-description">Take a simple 3-minute assessment to understand your health risks and get personalized recommendations.</p>
+                    <button class="btn-primary" onclick="startAssessment()">
+                        <i class="fas fa-play"></i>
+                        Start Risk Assessment
+                    </button>
+                    <div class="hero-features">
+                        <div class="feature">
+                            <i class="fas fa-check"></i>
+                            <span>Free & Confidential</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clock"></i>
+                            <span>Takes 3 Minutes</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-user-md"></i>
+                            <span>AI-Powered</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2>Why Choose HerHealth AI?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>AI-Powered Analysis</h3>
+                        <p>Advanced algorithms provide accurate risk assessment based on medical research.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Personalized Care</h3>
+                        <p>Get customized recommendations and screening schedules tailored to your profile.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Local Resources</h3>
+                        <p>Find nearby clinics and healthcare providers with NHIF coverage information.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Assessment Page -->
+    <div id="assessment-page" class="page">
+        <div class="container">
+            <div class="assessment-header">
+                <button class="btn-back" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </button>
+                <h2>Risk Assessment</h2>
+                <p>Please answer the following questions honestly for accurate results</p>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">Step 1 of 4</span>
+                </div>
+            </div>
+
+            <div class="assessment-form">
+                <!-- Step 1: Age -->
+                <div class="form-step active" id="step1">
+                    <div class="step-content">
+                        <h3><i class="fas fa-birthday-cake"></i> What is your age?</h3>
+                        <div class="input-group">
+                            <select id="age" class="form-select">
+                                <option value="">Select your age range</option>
+                                <option value="18-25">18-25 years</option>
+                                <option value="26-30">26-30 years</option>
+                                <option value="31-40">31-40 years</option>
+                                <option value="41-50">41-50 years</option>
+                                <option value="51-60">51-60 years</option>
+                                <option value="60+">60+ years</option>
+                            </select>
+                        </div>
+                        <div class="step-navigation">
+                            <button class="btn-secondary" disabled>Previous</button>
+                            <button class="btn-primary" onclick="nextStep()">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Sexual Partners -->
+                <div class="form-step" id="step2">
+                    <div class="step-content">
+                        <h3><i class="fas fa-users"></i> Number of sexual partners in your lifetime?</h3>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="partners" value="0-1" id="partners1">
+                                <label for="partners1">0-1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="partners" value="2-3" id="partners2">
+                                <label for="partners2">2-3</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="partners" value="4-6" id="partners3">
+                                <label for="partners3">4-6</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="partners" value="7+" id="partners4">
+                                <label for="partners4">7+</label>
+                            </div>
+                        </div>
+                        <div class="step-navigation">
+                            <button class="btn-secondary" onclick="prevStep()">Previous</button>
+                            <button class="btn-primary" onclick="nextStep()">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: HPV History -->
+                <div class="form-step" id="step3">
+                    <div class="step-content">
+                        <h3><i class="fas fa-virus"></i> Have you ever tested positive for HPV?</h3>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="hpv" value="positive" id="hpv1">
+                                <label for="hpv1">Yes, tested positive</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="hpv" value="negative" id="hpv2">
+                                <label for="hpv2">No, tested negative</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="hpv" value="never" id="hpv3">
+                                <label for="hpv3">Never been tested</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="hpv" value="unknown" id="hpv4">
+                                <label for="hpv4">Don't know</label>
+                            </div>
+                        </div>
+                        <div class="step-navigation">
+                            <button class="btn-secondary" onclick="prevStep()">Previous</button>
+                            <button class="btn-primary" onclick="nextStep()">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Pap Test -->
+                <div class="form-step" id="step4">
+                    <div class="step-content">
+                        <h3><i class="fas fa-microscope"></i> What was your last Pap test result?</h3>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="pap" value="normal" id="pap1">
+                                <label for="pap1">Normal/Negative</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="pap" value="abnormal" id="pap2">
+                                <label for="pap2">Abnormal cells detected</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="pap" value="never" id="pap3">
+                                <label for="pap3">Never had a Pap test</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="pap" value="overdue" id="pap4">
+                                <label for="pap4">Overdue for testing</label>
+                            </div>
+                        </div>
+                        <div class="step-navigation">
+                            <button class="btn-secondary" onclick="prevStep()">Previous</button>
+                            <button class="btn-primary" onclick="calculateRisk()">Get Results</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="results-page" class="page">
+        <div class="container">
+            <div class="results-header">
+                <h2>Your Risk Assessment Results</h2>
+            </div>
+            
+            <div class="results-content">
+                <div class="risk-card" id="riskCard">
+                    <div class="risk-icon" id="riskIcon">🌿</div>
+                    <div class="risk-level" id="riskLevel">Low Risk</div>
+                    <div class="risk-percentage" id="riskPercentage">15% estimated risk</div>
+                    <p id="riskDescription">Great news! Your risk factors suggest a low probability of cervical cancer.</p>
+                </div>
+
+                <div class="recommendations-card">
+                    <h3><i class="fas fa-lightbulb"></i> Personalized Recommendations</h3>
+                    <div id="recommendationsList">
+                        <!-- Recommendations will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="coverage-card">
+                    <h3><i class="fas fa-shield-alt"></i> NHIF Coverage & Costs</h3>
+                    <div class="coverage-grid">
+                        <div class="coverage-item covered">
+                            <h4>NHIF Covered Services</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Pap Smear Test - KSh 0</li>
+                                <li><i class="fas fa-check"></i> HPV Testing - KSh 0</li>
+                                <li><i class="fas fa-check"></i> Basic Consultation - KSh 0</li>
+                            </ul>
+                        </div>
+                        <div class="coverage-item additional">
+                            <h4>Additional Costs</h4>
+                            <ul>
+                                <li><i class="fas fa-info"></i> Colposcopy: KSh 3,000 - 5,000</li>
+                                <li><i class="fas fa-info"></i> Biopsy: KSh 2,000 - 4,000</li>
+                                <li><i class="fas fa-info"></i> Private consultation: KSh 1,500 - 3,000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clinic-finder">
+                    <h3><i class="fas fa-map-marker-alt"></i> Find Nearby Healthcare Providers</h3>
+                    <div class="clinics-grid">
+                        <div class="clinic-card">
+                            <h4>Nairobi Women's Hospital</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> Hurlingham, Nairobi (2.3 km)</p>
+                            <p><i class="fas fa-phone"></i> +254 20 272 2714</p>
+                            <div class="clinic-services">
+                                <span class="service-tag">Pap Smear</span>
+                                <span class="service-tag">HPV Testing</span>
+                                <span class="service-tag">NHIF</span>
+                            </div>
+                        </div>
+                        <div class="clinic-card">
+                            <h4>Kenyatta National Hospital</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> Upper Hill, Nairobi (5.1 km)</p>
+                            <p><i class="fas fa-phone"></i> +254 20 272 6300</p>
+                            <div class="clinic-services">
+                                <span class="service-tag">Pap Smear</span>
+                                <span class="service-tag">HPV Testing</span>
+                                <span class="service-tag">NHIF</span>
+                                <span class="service-tag">Oncology</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="restartAssessment()">
+                        <i class="fas fa-redo"></i> Take Assessment Again
+                    </button>
+                    <button class="btn-primary">
+                        <i class="fas fa-calendar-plus"></i> Book Appointment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Tools Page -->
+    <div id="data-tools-page" class="page">
+        <div class="container">
+            <div class="page-header">
+                <button class="btn-back" onclick="showPage('home')">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </button>
+                <h2>Data Science Tools</h2>
+                <p>Tools for data collection, analysis, and model development</p>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3>Data Collection</h3>
+                    <p>Upload and manage datasets for model training</p>
+                    <div class="tool-content">
+                        <input type="file" id="dataUpload" accept=".csv,.json,.xlsx" class="file-input">
+                        <button class="btn-primary" onclick="uploadData()">Upload Data</button>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Model Training</h3>
+                    <p>Train machine learning models</p>
+                    <div class="tool-content">
+                        <select class="form-select">
+                            <option>Random Forest</option>
+                            <option>Logistic Regression</option>
+                            <option>Neural Network</option>
+                        </select>
+                        <button class="btn-primary" onclick="trainModel()">Start Training</button>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Analytics</h3>
+                    <p>View model performance and insights</p>
+                    <div class="tool-content">
+                        <div class="metrics">
+                            <div class="metric">
+                                <span>Accuracy:</span>
+                                <strong>94.2%</strong>
+                            </div>
+                            <div class="metric">
+                                <span>Precision:</span>
+                                <strong>91.8%</strong>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="viewDashboard()">View Dashboard</button>
+                    </div>
+                </div>
+
+                <div class="tool-card full-width">
+                    <div class="tool-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>API Integration</h3>
+                    <p>Connect your models to the risk assessment tool</p>
+                    <div class="tool-content">
+                        <div class="api-example">
+                            <code>
+POST /api/predict<br>
+{"age": 30, "hpv_history": "negative", "pap_history": "normal"}
+                            </code>
+                        </div>
+                        <button class="btn-primary" onclick="testAPI()">Test API Connection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
