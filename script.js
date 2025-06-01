@@ -382,3 +382,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize progress bar
     updateProgressBar();
 });
+
+// Hamburger menu toggle for mobile view
+document.getElementById("hamburger").addEventListener("click", function () {
+    const navMenu = document.querySelector(".nav-menu");
+    navMenu.classList.toggle("active");
+});
