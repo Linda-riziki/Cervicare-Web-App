@@ -388,3 +388,13 @@ document.getElementById("hamburger").addEventListener("click", function () {
     const navMenu = document.querySelector(".nav-menu");
     navMenu.classList.toggle("active");
 });
+
+// Close nav menu when a link is clicked (mobile)
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        const navMenu = document.querySelector('.nav-menu');
+        if (navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+        }
+    });
+});
