@@ -274,32 +274,36 @@ function testAPI() {
     // testAPIConnection();
 }
 
+function determineRiskLevel(score) {
+    if (score <= 6) return 'Low';
+    else if (score <= 10) return 'Medium';
+    else return 'High';
+}
+
+
 // Backend integration functions (placeholders for actual implementation)
 function sendDataToBackend(data, riskScore) {
-    // This is where you would send the assessment data to your backend
-    console.log('Sending data to backend:', { ...data, riskScore });
-    
-    // Example API call structure:
-    /*
-    fetch('/api/risk-assessment', {
+    fetch('http://localhost:5000/assessment', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            formData: data,
+            age: data.age,
+            partners: data.partners,
+            hpv: data.hpv,
+            pap: data.pap,
             riskScore: riskScore,
-            timestamp: new Date().toISOString()
-        })
+            riskLevel: determineRiskLevel(riskScore),  
+        }),
     })
     .then(response => response.json())
     .then(result => {
-        console.log('Backend response:', result);
+        console.log('Data sent to backend:', result);
     })
     .catch(error => {
-        console.error('Error sending data to backend:', error);
+        console.error('Error sending data:', error);
     });
-    */
 }
 
 function uploadFileToBackend(file) {
@@ -354,23 +358,18 @@ function startModelTraining(modelType) {
 }
 
 function testAPIConnection() {
-    // Placeholder for API connection test
-    console.log('Testing API connection');
-    
-    // Example implementation:
-    /*
-    fetch('/api/health')
-    .then(response => response.json())
-    .then(result => {
-        console.log('API health check:', result);
-        alert('API connection successful!');
-    })
-    .catch(error => {
-        console.error('API connection failed:', error);
-        alert('API connection failed. Please check your backend.');
-    });
-    */
+    fetch('http://localhost:5000/health')
+        .then(response => response.json())
+        .then(result => {
+            console.log('API health check:', result);
+            alert('Backend is connected!');
+        })
+        .catch(error => {
+            console.error('API connection failed:', error);
+            alert('Cannot reach backend. Please make sure your server is running.');
+        });
 }
+
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
