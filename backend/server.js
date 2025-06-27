@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 //Constants
-const mongoUri = 'mongodb://127.0.0.1:27017/herhealthdb';
+const mongoUri = 'mongodb+srv://rizikilinda8:tZMiMPtOEhwsU0mn@cluster0.cp6h9fu.mongodb.net/herhealthdb?retryWrites=true&w=majority&appName=Cluster0';
 const PORT = 5000;
 
 //MongoDb connection
