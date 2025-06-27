@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - HerHealth AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-beige: #C1A37F;
+            --light-beige: #E4D1BB;
+            --white: #FFFFFF;
+            --dark-text: #333;
+            --soft-pink: #f472b6;
+            --gradient: linear-gradient(135deg, #f472b6, #e879f9, #fed7aa);
+            --shadow: 0 10px 25px rgba(193, 163, 127, 0.15);
+            --border-radius: 20px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #fed7aa 100%);
+            min-height: 100vh;
+            color: var(--dark-text);
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--soft-pink);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--soft-pink);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 20px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .chat-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .chat-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .chat-header p {
+            color: var(--dark-text);
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            max-height: 70vh;
+            overflow: hidden;
+        }
+
+        /* Chat Messages Area */
+        .chat-messages {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background: linear-gradient(to bottom, #fafafa, #ffffff);
+        }
+
+        /* Message Styles */
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: var(--gradient);
+        }
+
+        .message.user .message-avatar {
+            background: var(--primary-beige);
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .message.bot .message-content {
+            background: var(--light-beige);
+            color: var(--dark-text);
+        }
+
+        .message.user .message-content {
+            background: var(--primary-beige);
+            color: white;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 12px 18px;
+            background: var(--light-beige);
+            border-radius: 18px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-beige);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Chat Input */
+        .chat-input-container {
+            padding: 1.5rem 2rem;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: 2px solid var(--light-beige);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-beige);
+        }
+
+        .send-button {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(193, 163, 127, 0.3);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Scrollbar Styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--primary-beige);
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #a08660;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 15px 15px;
+            }
+
+            .chat-header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .chat-messages {
+                padding: 1.5rem;
+            }
+
+            .chat-input-container {
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chat-header h1 {
+                font-size: 1.7rem;
+            }
+
+            .chat-messages {
+                padding: 1rem;
+            }
+
+            .chat-input-container {
+                padding: 1rem;
+            }
+
+            .message-content {
+                max-width: 90%;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-heart"></i>
+                <span>HerHealth AI</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Assessment</a>
+                <a href="#" class="nav-link">Data Tools</a>
+                <a href="chatbot.html" class="nav-link" style="color: var(--soft-pink);">AI Assistant</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="chat-header">
+            <h1>AI Health Assistant</h1>
+            <p>Get personalized health guidance and support anytime</p>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <!-- Messages Area -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Message -->
+                <div class="message bot">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <div class="message-content">
+                            Hi there! I'm your HerHealth AI assistant. How can I support your health today? I can help you with questions about cervical cancer screening, risk factors, or general women's health concerns.
+                        </div>
+                        <div class="message-time" id="welcomeTime"></div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="chatInput" 
+                        class="chat-input" 
+                        placeholder="Type your health question here..."
+                        maxlength="500"
+                    >
+                    <button id="sendButton" class="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chat functionality
+        class HealthChatbot {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                
+                this.initializeChat();
+                this.bindEvents();
+            }
+
+            initializeChat() {
+                // Set welcome message time
+                document.getElementById('welcomeTime').textContent = this.getCurrentTime();
+                
+                // Focus on input
+                this.chatInput.focus();
+            }
+
+            bindEvents() {
+                // Send button click
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                
+                // Enter key press
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                // Input validation
+                this.chatInput.addEventListener('input', () => {
+                    const hasText = this.chatInput.value.trim().length > 0;
+                    this.sendButton.disabled = !hasText;
+                });
+            }
+
+            sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message) return;
+
+                // Add user message
+                this.addMessage(message, 'user');
+                
+                // Clear input
+                this.chatInput.value = '';
+                this.sendButton.disabled = true;
+                
+                // Show typing indicator
+                this.showTyping();
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    this.hideTyping();
+                    this.addBotResponse(message);
+                }, 1500 + Math.random() * 1000);
+            }
+
+            addMessage(content, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                
+                const avatar = type === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+                
+                messageDiv.innerHTML = `
+                    <div class="message-avatar">
+                        ${avatar}
+                    </div>
+                    <div>
+                        <div class="message-content">${content}</div>
+                        <div class="message-time">${this.getCurrentTime()}</div>
+                    </div>
+                `;
+
+                // Insert before typing indicator
+                this.chatMessages.insertBefore(messageDiv, this.typingIndicator);
+                this.scrollToBottom();
+            }
+
+            addBotResponse(userMessage) {
+                const response = this.generateResponse(userMessage);
+                this.addMessage(response, 'bot');
+            }
+
+            generateResponse(userMessage) {
+                const message = userMessage.toLowerCase();
+                
+                // Health-related responses
+                if (message.includes('cervical') || message.includes('cancer')) {
+                    return "Cervical cancer screening is very important for early detection. Regular Pap tests every 3 years (or as recommended by your doctor) can help catch abnormal cells early. Would you like information about risk factors or screening locations?";
+                }
+                
+                if (message.includes('pap') || message.includes('test')) {
+                    return "A Pap test checks for abnormal cells in the cervix. It's recommended for women aged 21-65. The procedure is quick and can be done at most clinics. In Kenya, many NHIF-covered facilities offer this service.";
+                }
+                
+                if (message.includes('hpv')) {
+                    return "HPV (Human Papillomavirus) is a common infection that can lead to cervical cancer. HPV vaccination and regular screening are the best prevention methods. The vaccine is most effective when given before becoming sexually active.";
+                }
+                
+                if (message.includes('risk') || message.includes('factors')) {
+                    return "Key cervical cancer risk factors include HPV infection, smoking, multiple sexual partners, early sexual activity, and immunosuppression. You can take our risk assessment to get personalized recommendations based on your profile.";
+                }
+                
+                if (message.includes('symptoms')) {
+                    return "Early cervical cancer often has no symptoms. As it progresses, symptoms may include unusual vaginal bleeding, pelvic pain, or pain during intercourse. However, these symptoms can have other causes, so it's important to see a healthcare provider for proper evaluation.";
+                }
+                
+                if (message.includes('appointment') || message.includes('clinic')) {
+                    return "I can help you find nearby healthcare providers that offer cervical cancer screening services. Many facilities in Kenya accept NHIF coverage. Would you like me to provide information about clinics in your area?";
+                }
+                
+                if (message.includes('cost') || message.includes('nhif')) {
+                    return "Good news! NHIF covers Pap smear tests and basic consultations at approved facilities. Additional tests like colposcopy may have extra costs (KSh 3,000-5,000). Always confirm coverage details with your chosen healthcare provider.";
+                }
+                
+                if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                    return "Hello! I'm here to help with your women's health questions, especially about cervical cancer prevention and screening. What would you like to know?";
+                }
+                
+                if (message.includes('thank')) {
+                    return "You're very welcome! Taking charge of your health is important. Feel free to ask me anything else about women's health or cervical cancer prevention.";
+                }
+                
+                // General health responses
+                if (message.includes('prevention')) {
+                    return "Prevention is key to good health! For cervical cancer: get vaccinated against HPV, have regular screenings, practice safe sex, don't smoke, and maintain a healthy lifestyle. Early detection saves lives!";
+                }
+                
+                // Default responses
+                const defaultResponses = [
+                    "That's a great question about women's health. While I can provide general information, it's always best to consult with a healthcare professional for personalized advice. Is there a specific aspect of cervical health you'd like to know more about?",
+                    "I understand your concern. For specific medical advice, please consult with a qualified healthcare provider. I can share general information about cervical cancer prevention and screening - what would be most helpful?",
+                    "Thank you for your question. I'm here to provide general health information and support. For the most accurate guidance regarding your specific situation, I recommend speaking with a healthcare professional. How else can I assist you today?"
+                ];
+                
+                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+
+            showTyping() {
+                this.typingIndicator.style.display = 'flex';
+                this.scrollToBottom();
+            }
+
+            hideTyping() {
+                this.typingIndicator.style.display = 'none';
+            }
+
+            getCurrentTime() {
+                return new Date().toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+            }
+
+            scrollToBottom() {
+                setTimeout(() => {
+                    this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                }, 100);
+            }
+        }
+
+        // Initialize chatbot when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new HealthChatbot();
+        });
+    </script>
+</body>
+</html>
