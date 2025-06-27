@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const assessmentRoutes = require('./routes');
 const cors = require('cors');
 // const bodyParser = require('body-parser');
+require('dotenv').config();
 
 //Create Express and middleware
 const app = express();
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 //Constants
-const mongoUri = 'mongodb+srv://rizikilinda8:tZMiMPtOEhwsU0mn@cluster0.cp6h9fu.mongodb.net/herhealthdb?retryWrites=true&w=majority&appName=Cluster0';
+const mongoUri = process.env.MONGO_URI;
 const PORT = 5000;
 
 //MongoDb connection
