@@ -13,6 +13,7 @@ app.use(cors());
 
 //Constants
 const mongoUri = process.env.MONGO_URI;
+//MONGO_URI=mongodb+srv://rizikilinda8:tZMiMPtOEhwsU0mn@cluster0.cp6h9fu.mongodb.net/herhealthdb?retryWrites=true&w=majority&appName=Cluster0
 const PORT = 5000;
 
 //MongoDb connection
