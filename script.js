@@ -4,16 +4,31 @@ let currentStep = 1;
 const totalSteps = 4;
 let formData = {};
 
-// Page navigation
+// Page navigation function
 function showPage(pageId) {
-    // Hide all pages
+    // Hide all page sections
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
     });
-    
-    // Show selected page
-    document.getElementById(pageId + '-page').classList.add('active');
+
+    // Show the selected section
+    const targetPage = document.getElementById(pageId + '-page');
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
 }
+
+// Run on page load
+window.addEventListener('DOMContentLoaded', () => {
+    // Check if there's a hash in the URL (like #assessment)
+    const hash = window.location.hash.substring(1); // remove "#"
+    if (hash) {
+        showPage(hash); // e.g. "assessment" → "assessment-page"
+    } else {
+        showPage('home'); // Default to home
+    }
+});
+
 
 // Assessment functions
 function startAssessment() {
