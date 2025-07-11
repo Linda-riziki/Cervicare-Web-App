@@ -4,30 +4,30 @@ let currentStep = 1;
 const totalSteps = 4;
 let formData = {};
 
-// Page navigation function
 function showPage(pageId) {
-    // Hide all page sections
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
     });
 
-    // Show the selected section
     const targetPage = document.getElementById(pageId + '-page');
     if (targetPage) {
         targetPage.classList.add('active');
     }
 }
 
-// Run on page load
-window.addEventListener('DOMContentLoaded', () => {
-    // Check if there's a hash in the URL (like #assessment)
-    const hash = window.location.hash.substring(1); // remove "#"
+// Run on both page load and hash change
+function handleHashChange() {
+    const hash = window.location.hash.substring(1);
     if (hash) {
-        showPage(hash); // e.g. "assessment" → "assessment-page"
+        showPage(hash);
     } else {
-        showPage('home'); // Default to home
+        showPage('home');
     }
-});
+}
+
+window.addEventListener('DOMContentLoaded', handleHashChange);
+window.addEventListener('hashchange', handleHashChange);
+
 
 
 // Assessment functions
