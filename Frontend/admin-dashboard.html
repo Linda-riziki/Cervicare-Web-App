@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HerHealth AI - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-pink: #f472b6;
+            --soft-pink: #fce7f3;
+            --lavender: #e879f9;
+            --peach: #fed7aa;
+            --beige: #C1A37F;
+            --light-beige: #E4D1BB;
+            --white: #ffffff;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gradient: linear-gradient(135deg, #fce7f3, #f3e8ff, #fed7aa);
+            --shadow: 0 10px 25px rgba(244, 114, 182, 0.15);
+            --border-radius: 20px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gradient);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray-600);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-pink);
+        }
+
+        .logout-btn {
+            background: var(--primary-pink);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-form {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-form h2 {
+            margin-bottom: 2rem;
+            color: var(--gray-800);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .patients-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .patient-card {
+            background: var(--gray-100);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--success);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .patient-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .patient-card.moderate-risk {
+            border-left-color: var(--warning);
+        }
+
+        .patient-card.high-risk {
+            border-left-color: var(--danger);
+        }
+
+        .patient-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .patient-info {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .risk-badge.low {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .risk-badge.moderate {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .risk-badge.high {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .view-details-btn {
+            background: var(--primary-pink);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-details-btn:hover {
+            background: var(--lavender);
+        }
+
+        /* Patient Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-600);
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            background: var(--gray-100);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-600);
+            color: white;
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-600);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .patients-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 10px;
+                padding: 1.5rem;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-heartbeat"></i>
+                HerHealth AI - Admin
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link">Dashboard</a>
+                <a href="#" class="nav-link">Patients</a>
+                <a href="#" class="nav-link">Reports</a>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-form">
+            <div class="nav-brand" style="justify-content: center; margin-bottom: 2rem;">
+                <i class="fas fa-heartbeat"></i>
+                HerHealth AI
+            </div>
+            <h2>Clinician Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="clinician@herhealth.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Welcome, Dr. Smith</h1>
+                <p style="color: var(--gray-600); font-size: 1.1rem;">Manage patient assessments and care plans</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="totalPatients">-</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-number" id="highRiskPatients">-</div>
+                    <div class="stat-label">High Risk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-number" id="pendingScreenings">-</div>
+                    <div class="stat-label">Pending Screenings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-number" id="completedAssessments">-</div>
+                    <div class="stat-label">Assessments Today</div>
+                </div>
+            </div>
+
+            <!-- Patients Section -->
+            <div class="patients-section">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Patient Assessments</h2>
+                    <button class="btn-primary" onclick="refreshPatients()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div id="patientsContainer" class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading patient data...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Details Modal -->
+    <div id="patientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalPatientName">Patient Details</h2>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let patients = [];
+        const API_BASE = 'http://localhost:5000';
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Simulate login (replace with actual API call)
+            try {
+                // const response = await fetch(`${API_BASE}/auth/login`, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ email, password })
+                // });
+
+                // For demo purposes, accept any login
+                if (email && password) {
+                    currentUser = { email, name: 'Dr. Smith' };
+                    showDashboard();
+                    loadDashboardData();
+                } else {
+                    alert('Please enter valid credentials');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please try again.');
+            }
+        });
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+        }
+
+        // Logout functionality
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                await Promise.all([
+                    loadPatients(),
+                    loadStats()
+                ]);
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        // Load patients
+        async function loadPatients() {
+            try {
+                // Simulate API call
+                // const response = await fetch(`${API_BASE}/assessment`);
+                // patients = await response.json();
+
+                // Mock data for demonstration
+                patients = [
+                    {
+                        id: 1,
+                        name: 'Sarah Johnson',
+                        age: 28,
+                        riskLevel: 'low',
+                        riskScore: 15,
+                        lastAssessment: '2024-01-15',
+                        sexualPartners: 2,
+                        hpvVaccinated: true,
+                        lastPapSmear: '2023-06-15',
+                        contraceptiveUse: 'pills',
+                        menstrualHistory: 'regular'
+                    },
+                    {
+                        id: 2,
+                        name: 'Maria Rodriguez',
+                        age: 35,
+                        riskLevel: 'moderate',
+                        riskScore: 45,
+                        lastAssessment: '2024-01-14',
+                        sexualPartners: 4,
+                        hpvVaccinated: false,
+                        lastPapSmear: '2022-03-20',
+                        contraceptiveUse: 'condoms',
+                        menstrualHistory: 'irregular'
+                    },
+                    {
+                        id: 3,
+                        name: 'Jennifer Kim',
+                        age: 42,
+                        riskLevel: 'high',
+                        riskScore: 75,
+                        lastAssessment: '2024-01-13',
+                        sexualPartners: 6,
+                        hpvVaccinated: false,
+                        lastPapSmear: '2021-08-10',
+                        contraceptiveUse: 'none',
+                        menstrualHistory: 'irregular'
+                    }
+                ];
+
+                displayPatients();
+            } catch (error) {
+                console.error('Error loading patients:', error);
+                document.getElementById('patientsContainer').innerHTML = 
+                    '<p style="color: var(--danger);">Error loading patient data. Please try again.</p>';
+            }
+        }
+
+        // Display patients
+        function displayPatients() {
+            const container = document.getElementById('patientsContainer');
+            
+            if (patients.length === 0) {
+                container.innerHTML = '<p style="color: var(--gray-600);">No patient assessments found.</p>';
+                return;
+            }
+
+            const patientsHTML = patients.map(patient => `
+                <div class="patient-card ${patient.riskLevel}-risk" onclick="showPatientDetails(${patient.id})">
+                    <div class="patient-name">${patient.name}</div>
+                    <div class="patient-info">Age: ${patient.age} • Last Assessment: ${patient.lastAssessment}</div>
+                    <div class="risk-badge ${patient.riskLevel}">
+                        ${patient.riskLevel.charAt(0).toUpperCase() + patient.riskLevel.slice(1)} Risk (${patient.riskScore}%)
+                    </div>
+                    <button class="view-details-btn" onclick="event.stopPropagation(); showPatientDetails(${patient.id})">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            `).join('');
+
+            container.innerHTML = `<div class="patients-grid">${patientsHTML}</div>`;
+        }
+
+        // Load stats
+        async function loadStats() {
+            try {
+                // Mock stats calculation
+                const stats = {
+                    total: patients.length,
+                    highRisk: patients.filter(p => p.riskLevel === 'high').length,
+                    pending: Math.floor(Math.random() * 10) + 5,
+                    completed: Math.floor(Math.random() * 20) + 10
+                };
+
+                document.getElementById('totalPatients').textContent = stats.total;
+                document.getElementById('highRiskPatients').textContent = stats.highRisk;
+                document.getElementById('pendingScreenings').textContent = stats.pending;
+                document.getElementById('completedAssessments').textContent = stats.completed;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Show patient details
+        function showPatientDetails(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            if (!patient) return;
+
+            document.getElementById('modalPatientName').textContent = patient.name;
+            
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div class="detail-section">
+                    <div class="detail-title">Basic Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Age</div>
+                            <div class="detail-value">${patient.age} years</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Risk Level</div>
+                            <div class="detail-value">
+                                <span class="risk-badge ${patient.riskLevel}">${patient.riskLevel.charAt(0).toUpperCase() + patient.riskLevel.slice(1)} (${patient.riskScore}%)</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Last Assessment</div>
+                            <div class="detail-value">${patient.lastAssessment}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-title">Risk Factors</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Sexual Partners</div>
+                            <div class="detail-value">${patient.sexualPartners}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">HPV Vaccinated</div>
+                            <div class="detail-value">${patient.hpvVaccinated ? 'Yes' : 'No'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Last Pap Smear</div>
+                            <div class="detail-value">${patient.lastPapSmear}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Contraceptive Use</div>
+                            <div class="detail-value">${patient.contraceptiveUse}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Menstrual History</div>
+                            <div class="detail-value">${patient.menstrualHistory}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-title">Recommended Actions</div>
+                    <div class="detail-grid">
+                        ${getRecommendations(patient).map(rec => `
+                            <div class="detail-item">
+                                <div class="detail-label">${rec.type}</div>
+                                <div class="detail-value">${rec.description}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="estimateCost(${patient.id})">
+                        <i class="fas fa-calculator"></i> Estimate Cost
+                    </button>
+                    <button class="btn-secondary" onclick="checkInventory()">
+                        <i class="fas fa-boxes"></i> Check Inventory
+                    </button>
+                    <button class="btn-secondary" onclick="scheduleFollowUp(${patient.id})">
+                        <i class="fas fa-calendar-plus"></i> Schedule Follow-up
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('patientModal').classList.add('active');
+        }
+
+        // Get recommendations based on risk level
+        function getRecommendations(patient) {
+            const recommendations = [];
+            
+            if (patient.riskLevel === 'high') {
+                recommendations.push(
+                    { type: 'Immediate', description: 'Schedule Pap smear within 2 weeks' },
+                    { type: 'Follow-up', description: 'HPV testing recommended' },
+                    { type: 'Counseling', description: 'Risk reduction counseling needed' }
+                );
+            } else if (patient.riskLevel === 'moderate') {
+                recommendations.push(
+                    { type: 'Screening', description: 'Schedule Pap smear within 3 months' },
+                    { type: 'Prevention', description: 'Discuss HPV vaccination if eligible' }
+                );
+            } else {
+                recommendations.push(
+                    { type: 'Routine', description: 'Continue regular screening schedule' },
+                    { type: 'Prevention', description: 'Maintain current preventive measures' }
+                );
+            }
+            
+            return recommendations;
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('patientModal').classList.remove('active');
+        }
+
+        // Estimate cost
+        async function estimateCost(patientId) {
+            try {
+                // const response = await fetch(`${API_BASE}/estimate-cost`, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ patientId })
+                // });
+                
+                // Mock response
+                const cost = Math.floor(Math.random() * 200) + 50;
+                alert(`Estimated cost for recommended screenings: $${cost}`);
+            } catch (error) {
+                console.error('Error estimating cost:', error);
+                alert('Error calculating cost estimate');
+            }
+        }
+
+        // Check inventory
+        async function checkInventory() {
+            try {
+                // const response = await fetch(`${API_BASE}/inventory`);
+                // const inventory = await response.json();
+                
+                // Mock response
+                alert('Inventory Status:\n\nPap Smear Kits: 25 available\nHPV Test Kits: 15 available\nSpeculums: 50 available');
+            } catch (error) {
+                console.error('Error checking inventory:', error);
+                alert('Error checking inventory status');
+            }
+        }
+
+        // Schedule follow-up
+        function scheduleFollowUp(patientId) {
+            alert('Follow-up scheduling feature will be integrated with calendar system');
+        }
+
+        // Refresh patients
+        function refreshPatients() {
+            document.getElementById('patientsContainer').innerHTML = 
+                '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading patient data...</div>';
+            setTimeout(() => {
+                loadPatients();
+                loadStats();
+            }, 1000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('patientModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize dashboard (for demo purposes)
+        // Uncomment the line below to skip login for testing
+        // showDashboard(); loadDashboardData();
+    </script>
+</body>
+</html>

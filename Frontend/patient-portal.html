@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HerHealth AI - Patient Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-pink: #f472b6;
+            --soft-pink: #fce7f3;
+            --lavender: #e879f9;
+            --peach: #fed7aa;
+            --beige: #C1A37F;
+            --light-beige: #E4D1BB;
+            --white: #ffffff;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gradient: linear-gradient(135deg, #fce7f3, #f3e8ff, #fed7aa);
+            --shadow: 0 10px 25px rgba(244, 114, 182, 0.15);
+            --border-radius: 20px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gradient);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .brand {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        /* Login Section */
+        .login-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .login-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--gray-800);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-600);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--light-beige);
+            color: var(--gray-800);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--beige);
+            color: white;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .welcome-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .welcome-card h2 {
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+
+        .risk-summary {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .risk-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .risk-card.low {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            border-left: 5px solid var(--success);
+        }
+
+        .risk-card.moderate {
+            background: linear-gradient(135deg, #fef3c7, #fde047);
+            border-left: 5px solid var(--warning);
+        }
+
+        .risk-card.high {
+            background: linear-gradient(135deg, #fee2e2, #fca5a5);
+            border-left: 5px solid var(--danger);
+        }
+
+        .risk-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .risk-level {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-percentage {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .care-plan {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .care-item {
+            background: var(--gray-100);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .care-icon {
+            color: var(--primary-pink);
+            font-size: 1.2rem;
+        }
+
+        .educational-links {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .edu-link {
+            background: var(--soft-pink);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--gray-800);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .edu-link:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .edu-link h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-pink);
+        }
+
+        /* Symptom Tracker */
+        .symptom-tracker {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .symptom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .symptom-item {
+            background: var(--gray-100);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .symptom-item:hover {
+            background: var(--soft-pink);
+        }
+
+        .symptom-item.selected {
+            background: var(--soft-pink);
+            border-color: var(--primary-pink);
+        }
+
+        .symptom-item i {
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+            margin-bottom: 0.5rem;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-pink);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .brand {
+                font-size: 1.5rem;
+            }
+
+            .login-section, .welcome-card, .risk-summary, .care-plan, .educational-links, .symptom-tracker {
+                padding: 1.5rem;
+            }
+
+            .risk-card {
+                padding: 1.5rem;
+            }
+
+            .risk-icon {
+                font-size: 2.5rem;
+            }
+
+            .risk-level {
+                font-size: 1.5rem;
+            }
+
+            .link-grid, .symptom-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logout-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 100%;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="brand">
+            <i class="fas fa-heartbeat"></i>
+            HerHealth AI
+        </div>
+        <p class="subtitle">Your Personal Health Companion</p>
+    </div>
+
+    <!-- Login Section -->
+    <div id="loginSection" class="container">
+        <div class="login-section">
+            <h2>Access Your Health Dashboard</h2>
+            <p style="margin-bottom: 2rem; color: var(--gray-600);">Enter your details to view your personalized health information</p>
+            
+            <form id="patientLoginForm">
+                <div class="form-group">
+                    <label for="patientId">Patient ID</label>
+                    <input type="text" id="patientId" name="patientId" placeholder="Enter your Patient ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientName">Full Name</label>
+                    <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth</label>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Access My Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Patient Dashboard -->
+    <div id="patientDashboard" class="dashboard">
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+
+        <div class="container">
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <h2 id="welcomeMessage">Welcome back!</h2>
+                <p style="color: var(--gray-600);">Here's your latest health summary and care plan</p>
+            </div>
+
+            <!-- Risk Summary -->
+            <div class="risk-summary">
+                <h3 class="section-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Your Risk Assessment
+                </h3>
+                <div id="riskCard" class="risk-card">
+                    <!-- Risk content will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Care Plan -->
+            <div class="care-plan">
+                <h3 class="section-title">
+                    <i class="fas fa-clipboard-list"></i>
+                    Your Care Plan
+                </h3>
+                <div id="carePlanContent">
+                    <!-- Care plan items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Educational Resources -->
+            <div class="educational-links">
+                <h3 class="section-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Educational Resources
+                </h3>
+                <div class="link-grid">
+                    <a href="#" class="edu-link">
+                        <h4>Understanding Cervical Cancer</h4>
+                        <p>Learn about risk factors, symptoms, and prevention methods</p>
+                    </a>
+                    <a href="#" class="edu-link">
+                        <h4>HPV Vaccination Guide</h4>
+                        <p>Information about HPV vaccines and their importance</p>
+                    </a>
+                    <a href="#" class="edu-link">
+                        <h4>Screening Guidelines</h4>
+                        <p>When and how often to get screened for cervical cancer</p>
+                    </a>
+                    <a href="#" class="edu-link">
+                        <h4>Healthy Lifestyle Tips</h4>
+                        <p>Nutrition, exercise, and wellness recommendations</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Symptom Tracker -->
+            <div class="symptom-tracker">
+                <h3 class="section-title">
+                    <i class="fas fa-notes-medical"></i>
+                    Symptom Tracker
+                </h3>
+                <p style="margin-bottom: 1.5rem; color: var(--gray-600);">Select any symptoms you're experiencing:</p>
+                
+                <div class="symptom-grid">
+                    <div class="symptom-item" onclick="toggleSymptom(this, 'abdominal-pain')">
+                        <i class="fas fa-plus-circle"></i>
+                        <div>Abdominal Pain</div>
+                    </div>
+                    <div class="symptom-item" onclick="toggleSymptom(this, 'unusual-bleeding')">
+                        <i class="fas fa-tint"></i>
+                        <div>Unusual Bleeding</div>
+                    </div>
+                    <div class="symptom-item" onclick="toggleSymptom(this, 'pelvic-pain')">
+                        <i class="fas fa-female"></i>
+                        <div>Pelvic Pain</div>
+                    </div>
+                    <div class="symptom-item" onclick="toggleSymptom(this, 'painful-urination')">
+                        <i class="fas fa-toilet"></i>
+                        <div>Painful Urination</div>
+                    </div>
+                    <div class="symptom-item" onclick="toggleSymptom(this, 'fatigue')">
+                        <i class="fas fa-bed"></i>
+                        <div>Fatigue</div>
+                    </div>
+                    <div class="symptom-item" onclick="toggleSymptom(this, 'back-pain')">
+                        <i class="fas fa-user-injured"></i>
+                        <div>Back Pain</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="btn-primary" onclick="submitSymptoms()" style="width: auto; padding: 12px 24px;">
+                        <i class="fas fa-paper-plane"></i> Submit Symptoms
+                    </button>
+                    <button class="btn-secondary" onclick="clearSymptoms()">
+                        <i class="fas fa-times"></i> Clear All
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentPatient = null;
+        let selectedSymptoms = [];
+        const API_BASE = 'http://localhost:5000';
+
+        // Patient login
+        document.getElementById('patientLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const patientId = document.getElementById('patientId').value;
+            const patientName = document.getElementById('patientName').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+
+            try {
+                // Simulate API call to get patient summary
+                // const response = await fetch(`${API_BASE}/patient-summary`, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ patientId, patientName, dateOfBirth })
+                // });
+
+                // Mock patient data for demonstration
+                if (patientId && patientName && dateOfBirth) {
+                    currentPatient = {
+                        id: patientId,
+                        name: patientName,
+                        dateOfBirth: dateOfBirth,
+                        riskLevel: 'moderate',
+                        riskScore: 35,
+                        lastAssessment: '2024-01-15',
+                        nextScreening: '2024-04-15',
+                        carePlan: [
+                            'Schedule Pap smear within 3 months',
+                            'Consider HPV vaccination consultation',
+                            'Follow healthy lifestyle recommendations',
+                            'Monitor symptoms and report changes'
+                        ]
+                    };
+                    
+                    showDashboard();
+                } else {
+                    alert('Please fill in all required fields');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Error accessing patient records. Please try again.');
+            }
+        });
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('patientDashboard').classList.add('active');
+            
+            populateDashboard();
+        }
+
+        // Populate dashboard with patient data
+        function populateDashboard() {
+            if (!currentPatient) return;
+
+            // Welcome message
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${currentPatient.name}!`;
+
+            // Risk assessment card
+            const riskCard = document.getElementById('riskCard');
+            const riskClass = currentPatient.riskLevel;
+            const riskIcon = getRiskIcon(currentPatient.riskLevel);
+            const riskColor = getRiskColor(currentPatient.riskLevel);
+
+            riskCard.className = `risk-card ${riskClass}`;
+            riskCard.innerHTML = `
+                <div class="risk-icon" style="color: ${riskColor};">
+                    <i class="${riskIcon}"></i>
+                </div>
+                <div class="risk-level" style="color: ${riskColor};">
+                    ${currentPatient.riskLevel.charAt(0).toUpperCase() + currentPatient.riskLevel.slice(1)} Risk
+                </div>
+                <div class="risk-percentage">
+                    Risk Score: ${currentPatient.riskScore}%
+                </div>
+                <p style="color: var(--gray-600); font-size: 0.9rem;">
+                    Last assessed: ${currentPatient.lastAssessment}
+                </p>
+            `;
+
+            // Care plan
+            const carePlanContent = document.getElementById('carePlanContent');
+            carePlanContent.innerHTML = currentPatient.carePlan.map(item => `
+                <div class="care-item">
+                    <i class="fas fa-check-circle care-icon"></i>
+                    <span>${item}</span>
+                </div>
+            `).join('');
+        }
+
+        // Get risk icon based on level
+        function getRiskIcon(riskLevel) {
+            const icons = {
+                low: 'fas fa-check-circle',
+                moderate: 'fas fa-exclamation-triangle',
+                high: 'fas fa-exclamation-circle'
+            };
+            return icons[riskLevel] || 'fas fa-question-circle';
+        }
+
+        // Get risk color based on level
+        function getRiskColor(riskLevel) {
+            const colors = {
+                low: 'var(--success)',
+                moderate: 'var(--warning)',
+                high: 'var(--danger)'
+            };
+            return colors[riskLevel] || 'var(--gray-600)';
+        }
+
+        // Toggle symptom selection
+        function toggleSymptom(element, symptom) {
+            element.classList.toggle('selected');
+            
+            if (selectedSymptoms.includes(symptom)) {
+                selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
+            } else {
+                selectedSymptoms.push(symptom);
+            }
+        }
+
+        // Submit symptoms
+        async function submitSymptoms() {
+            if (selectedSymptoms.length === 0) {
+                alert('Please select at least one symptom or use "Clear All" if you have no symptoms.');
+                return;
+            }
+
+            try {
+                // const response = await fetch(`${API_BASE}/symptoms`, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ 
+                //         patientId: currentPatient.id,
+                //         symptoms: selectedSymptoms,
+                //         date: new Date().toISOString()
+                //     })
+                // });
+
+                alert(`Symptoms recorded: ${selectedSymptoms.join(', ')}\n\nYour healthcare provider will be notified if any urgent symptoms are detected.`);
+                
+                // Clear selections after submission
+                clearSymptoms();
+            } catch (error) {
+                console.error('Error submitting symptoms:', error);
+                alert('Error recording symptoms. Please try again.');
+            }
+        }
+
+        // Clear all symptoms
+        function clearSymptoms() {
+            selectedSymptoms = [];
+            document.querySelectorAll('.symptom-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+        }
+
+        // Logout
+        function logout() {
+            currentPatient = null;
+            selectedSymptoms = [];
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('patientDashboard').classList.remove('active');
+            
+            // Clear form
+            document.getElementById('patientLoginForm').reset();
+        }
+
+        // Educational link clicks
+        document.querySelectorAll('.edu-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Educational content will be integrated with your learning management system.');
+            });
+        });
+    </script>
+</body>
+</html>
