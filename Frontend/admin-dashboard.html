@@ -111,12 +111,26 @@
         }
 
         /* Login Page */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+        /* .login-container {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
         }
 
         .login-form {
@@ -178,7 +192,7 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow);
-        }
+        } */
 
         /* Dashboard */
         .dashboard {
@@ -491,45 +505,52 @@
                 HerHealth AI - Admin
             </div>
             <div class="nav-menu">
-                <a href="#" class="nav-link">Dashboard</a>
-                <a href="#" class="nav-link">Patients</a>
-                <a href="#" class="nav-link">Reports</a>
+                <a href="#dashboard" class="nav-link" onclick="goToDashboardSection(); return false;">Dashboard</a>
+                <a href="#patients-section" class="nav-link" onclick="goToPatientsSection(); return false;">Patients</a>
+                <!-- <a href="#" class="nav-link">Reports</a> -->
                 <button class="logout-btn" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
         </div>
     </nav>
-
-    <!-- Login Page -->
-    <div id="loginPage" class="login-container">
-        <div class="login-form">
-            <div class="nav-brand" style="justify-content: center; margin-bottom: 2rem;">
-                <i class="fas fa-heartbeat"></i>
-                HerHealth AI
-            </div>
-            <h2>Clinician Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="clinician@herhealth.com">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Enter your password">
-                </div>
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-            </form>
-        </div>
+    
+    <!-- login-page -->
+     <!-- <div id="loginPage" class="login-container" style="margin: 100px auto; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <button class="btn-back" onclick="goHome()" style="margin-bottom: 20px;">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </button>
+    <div class="nav-brand" style="justify-content: center; margin-bottom: 1rem;">
+        <i class="fas fa-heartbeat"></i>
+        <span>HerHealth AI</span>
     </div>
+    <form id="loginForm" style="width: 100%; max-width: 400px;">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required placeholder="Dr. Linda">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="clinician@herhealth.com">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+    </form>
+</div> -->
+
+  
+
 
     <!-- Dashboard -->
     <div id="dashboard" class="dashboard">
         <div class="container">
             <div class="dashboard-header">
-                <h1>Welcome, Dr. Smith</h1>
+                <h2 id="greeting">Welcome, Dr.</h2>
                 <p style="color: var(--gray-600); font-size: 1.1rem;">Manage patient assessments and care plans</p>
             </div>
 
@@ -566,7 +587,7 @@
             </div>
 
             <!-- Patients Section -->
-            <div class="patients-section">
+            <div class="patients-section" id="patients-section">
                 <div class="section-header">
                     <h2 class="section-title">Recent Patient Assessments</h2>
                     <button class="btn-primary" onclick="refreshPatients()">
@@ -600,47 +621,71 @@
         const API_BASE = 'http://localhost:5000';
 
         // Login functionality
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+//         document.getElementById('loginForm').addEventListener('submit', async (e) => {
+//             e.preventDefault();
+//             const name = document.getElementById('name').value;
+//             const email = document.getElementById('email').value;
+//             const password = document.getElementById('password').value;
 
-            // Simulate login (replace with actual API call)
-            try {
-                // const response = await fetch(`${API_BASE}/auth/login`, {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({ email, password })
-                // });
+//           try {
+//          const response = await fetch(`${API_BASE}/auth/login`, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ email, password, name })
+//     });
 
-                // For demo purposes, accept any login
-                if (email && password) {
-                    currentUser = { email, name: 'Dr. Smith' };
-                    showDashboard();
-                    loadDashboardData();
-                } else {
-                    alert('Please enter valid credentials');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                alert('Login failed. Please try again.');
-            }
-        });
+//     const data = await response.json();
+
+//     if (data.success) {
+//         currentUser = data;
+//         showDashboard();
+//         loadDashboardData();
+//     } else {
+//         alert(data.message || 'Login failed.');
+//     }
+// } catch (error) {
+//     console.error('Login error:', error);
+//     alert('Login failed. Please try again.');
+// }
+// console.log("Sending login payload:", { email, password, name });
+
+//         });
 
         // Show dashboard
         function showDashboard() {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboard').classList.add('active');
-        }
+    // document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('dashboard').classList.add('active');
+
+    // Set dynamic name
+//     if (currentUser && currentUser.name) {
+//         document.getElementById('dashboardGreeting').textContent = `Welcome, ${currentUser.name}`;
+//     }
+ }
+const name = localStorage.getItem('userName');
+if (name) {
+    document.getElementById('greeting').textContent = `Welcome, Dr. ${name}`;
+}
+    
+     function goToPatientsSection() {
+    showDashboard(); // Ensure dashboard is visible
+    const section = document.getElementById('patients-section');
+    section.scrollIntoView({ behavior: 'smooth' });
+}
+     
+    function goToDashboardSection() {
+    showDashboard(); // Ensure dashboard is visible
+    const dashboardTop = document.querySelector('.dashboard-header');
+    if (dashboardTop) {
+        dashboardTop.scrollIntoView({ behavior: 'smooth' });
+    }
+}
 
         // Logout functionality
         function logout() {
-            currentUser = null;
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('dashboard').classList.remove('active');
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-        }
+    localStorage.removeItem('userName'); // clear stored name
+    window.location.href = 'login.html'; // redirect to login page
+}
+
 
         // Load dashboard data
         async function loadDashboardData() {
@@ -927,7 +972,8 @@
 
         // Initialize dashboard (for demo purposes)
         // Uncomment the line below to skip login for testing
-        // showDashboard(); loadDashboardData();
+        showDashboard();
+        loadDashboardData();
     </script>
 </body>
 </html>

@@ -401,10 +401,10 @@
             <p style="margin-bottom: 2rem; color: var(--gray-600);">Enter your details to view your personalized health information</p>
             
             <form id="patientLoginForm">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="patientId">Patient ID</label>
                     <input type="text" id="patientId" name="patientId" placeholder="Enter your Patient ID" required>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label for="patientName">Full Name</label>
                     <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
@@ -430,7 +430,12 @@
             <!-- Welcome Card -->
             <div class="welcome-card">
                 <h2 id="welcomeMessage">Welcome back!</h2>
-                <p style="color: var(--gray-600);">Here's your latest health summary and care plan</p>
+                <a href="assessment.html" class="btn-primary">
+                 <i class="fas fa-vial"></i>
+                    Start Risk Assessment
+                </a>
+
+                <p style="color: var(--gray-600); padding: 20px;">Here's your latest health summary and care plan</p>
             </div>
 
             <!-- Risk Summary -->
@@ -531,6 +536,16 @@
     <script>
         // Global variables
         let currentPatient = null;
+        // Check if redirected from assessment
+const urlParams = new URLSearchParams(window.location.search);
+const fromAssessment = urlParams.get('fromAssessment');
+
+// If redirected from assessment and currentPatient data is stored in sessionStorage
+if (fromAssessment && sessionStorage.getItem('patient')) {
+    currentPatient = JSON.parse(sessionStorage.getItem('patient'));
+    showDashboard();
+}
+
         let selectedSymptoms = [];
         const API_BASE = 'http://localhost:5000';
 
@@ -538,7 +553,7 @@
         document.getElementById('patientLoginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const patientId = document.getElementById('patientId').value;
+            // const patientId = document.getElementById('patientId').value;
             const patientName = document.getElementById('patientName').value;
             const dateOfBirth = document.getElementById('dateOfBirth').value;
 
@@ -551,32 +566,33 @@
                 // });
 
                 // Mock patient data for demonstration
-                if (patientId && patientName && dateOfBirth) {
-                    currentPatient = {
-                        id: patientId,
-                        name: patientName,
-                        dateOfBirth: dateOfBirth,
-                        riskLevel: 'moderate',
-                        riskScore: 35,
-                        lastAssessment: '2024-01-15',
-                        nextScreening: '2024-04-15',
-                        carePlan: [
-                            'Schedule Pap smear within 3 months',
-                            'Consider HPV vaccination consultation',
-                            'Follow healthy lifestyle recommendations',
-                            'Monitor symptoms and report changes'
-                        ]
-                    };
-                    
-                    showDashboard();
-                } else {
-                    alert('Please fill in all required fields');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                alert('Error accessing patient records. Please try again.');
-            }
-        });
+                if (patientName && dateOfBirth) {
+            currentPatient = {
+                id: `${patientName}_${dateOfBirth}`,
+                name: patientName,
+                dateOfBirth: dateOfBirth,
+                riskLevel: 'moderate',
+                riskScore: 35,
+                lastAssessment: '2024-01-15',
+                nextScreening: '2024-04-15',
+                carePlan: [
+                    'Schedule Pap smear within 3 months',
+                    'Consider HPV vaccination consultation',
+                    'Follow healthy lifestyle recommendations',
+                    'Monitor symptoms and report changes'
+                ]
+            };
+            sessionStorage.setItem('patient', JSON.stringify(currentPatient));
+
+            showDashboard();
+        } else {
+            alert('Please fill in all required fields');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('Error accessing patient records. Please try again.');
+    }
+});
 
         // Show dashboard
         function showDashboard() {
@@ -694,14 +710,8 @@
 
         // Logout
         function logout() {
-            currentPatient = null;
-            selectedSymptoms = [];
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('patientDashboard').classList.remove('active');
-            
-            // Clear form
-            document.getElementById('patientLoginForm').reset();
-        }
+    window.location.href = 'login.html';
+}
 
         // Educational link clicks
         document.querySelectorAll('.edu-link').forEach(link => {

@@ -21,9 +21,13 @@ function handleHashChange() {
     if (hash) {
         showPage(hash);
     } else {
-        showPage('home');
+        const homePage = document.getElementById('home-page');
+        if (homePage) {
+            showPage('home');
+        }
     }
 }
+
 
 window.addEventListener('DOMContentLoaded', handleHashChange);
 window.addEventListener('hashchange', handleHashChange);
@@ -158,6 +162,7 @@ function calculateRisk() {
     
     // Send data to backend (placeholder for API integration)
     sendDataToBackend(formData, riskScore);
+    predictUsingAI(formData);
 }
 
 function displayResults(riskScore) {
@@ -298,7 +303,7 @@ function determineRiskLevel(score) {
 
 // Backend integration functions (placeholders for actual implementation)
 function sendDataToBackend(data, riskScore) {
-    fetch('http://localhost:5000/assessment', {
+    fetch('https://cervicare-web-app-1.onrender.com/assessment', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -373,7 +378,7 @@ function startModelTraining(modelType) {
 }
 
 function testAPIConnection() {
-    fetch('http://localhost:5000/health')
+    fetch('https://cervicare-web-app-1.onrender.com/assessment')
         .then(response => response.json())
         .then(result => {
             console.log('API health check:', result);
@@ -385,30 +390,69 @@ function testAPIConnection() {
         });
 }
 
+function predictUsingAI(data) {
+    fetch('https://cervicare-web-app-1.onrender.com/predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(res => res.json())
+    .then(result => {
+        alert('AI Model Prediction: ' + result.prediction);
+        console.log('Prediction:', result);
+    })
+    .catch(err => {
+        console.error('Prediction error:', err);
+    });
+}
+
+
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('HerHealth AI application loaded');
-    
-    // Show home page by default
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('HerHealth AI application loaded');
+
+  const isIndexPage = document.getElementById('home-page') !== null;
+  const isAssessmentPage = document.getElementById('assessment-page') !== null;
+
+  if (isIndexPage) {
+    // Only for index.html
     showPage('home');
-    
-    // Initialize progress bar
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange();
+  }
+
+  if (isAssessmentPage) {
+    // Only for assessment.html
     updateProgressBar();
+    document.getElementById('step1').classList.add('active'); // Ensure step1 is shown
+  }
 });
+
+
 
 // Hamburger menu toggle for mobile view
-document.getElementById("hamburger").addEventListener("click", function () {
+const hamburger = document.getElementById("hamburger");
+if (hamburger) {
+  hamburger.addEventListener("click", function () {
     const navMenu = document.querySelector(".nav-menu");
     navMenu.classList.toggle("active");
-});
+  });
+}
+
 
 // Close nav menu when a link is clicked (mobile)
-document.querySelectorAll('.nav-link').forEach(link => {
+const navLinks = document.querySelectorAll('.nav-link');
+if (navLinks.length > 0) {
+  navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        const navMenu = document.querySelector('.nav-menu');
-        if (navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-        }
+      const navMenu = document.querySelector('.nav-menu');
+      if (navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+      }
     });
-});
+  });
+}
+

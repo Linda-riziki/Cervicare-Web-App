@@ -411,7 +411,7 @@
             </button>
             <div class="nav-menu">
                  <a href="index.html#home" class="nav-link">Home</a>
-                 <a href="index.html#assessment" class="nav-link">Assessment</a>
+                 <!-- <a href="index.html#assessment" class="nav-link">Assessment</a> -->
                  <a href="index.html#data-tools" class="nav-link">Data Tools</a>
                  <a href="chatbot.html" class="nav-link">AI Assistant</a>
                  <a href="login.html" class="nav-link">Login</a>
@@ -435,6 +435,20 @@
         <p class="login-subtitle">Sign in to access your personalized health dashboard</p>
         
         <form id="loginForm">
+            <div class="form-group">
+               <label for="name">Full Name</label>
+              <div class="input-wrapper">
+                <i class="fas fa-user input-icon"></i>
+              <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            required 
+            placeholder="Enter your full name"
+        >
+    </div>
+</div>
+
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <div class="input-wrapper">
@@ -472,7 +486,7 @@
                     <select id="role" name="role" required>
                         <option value="">Select your account type</option>
                         <option value="patient">Patient</option>
-                        <option value="admin">Healthcare Provider</option>
+                        <option value="admin">Admin/Healthcare Provider</option>
                     </select>
                 </div>
             </div>
@@ -554,43 +568,42 @@
             loadingSpinner.classList.remove('show');
         }
 
-        // Simulate API call for future integration
-        async function authenticateUser(email, password, role) {
-            // This is placeholder code for future API integration
-            // Replace with actual fetch call to your backend
-            /*
-            try {
-                const response = await fetch('http://localhost:5000/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password, role })
-                });
+        // Actual API call to backend
+async function authenticateUser(email, name, password, role) {
+    try {
+        const response = await fetch('http://localhost:5000/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, name, password, role })
+        });
 
-                if (!response.ok) {
-                    throw new Error('Authentication failed');
-                }
+        const data = await response.json();
 
-                const data = await response.json();
-                return { success: true, data };
-            } catch (error) {
-                return { success: false, error: error.message };
-            }
-            */
-
-            // Dummy authentication logic
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    if (role === 'admin' && password !== 'admin123') {
-                        resolve({ success: false, error: 'Invalid admin credentials' });
-                    } else {
-                        resolve({ success: true, data: { role, email } });
-                    }
-                }, 1000); // Simulate network delay
-            });
+        if (!response.ok) {
+            throw new Error(data.message || 'Authentication failed');
         }
 
+        return { success: true, data };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+
+
+
+            // Dummy authentication logic
+            // return new Promise((resolve) => {
+            //     setTimeout(() => {
+            //         if (role === 'admin' && password !== 'admin123') {
+            //             resolve({ success: false, error: 'Invalid admin credentials' });
+            //         } else {
+            //             resolve({ success: true, data: { role, email } });
+            //         }
+            //     }, 1000); // Simulate network delay
+            // });
+        
+        }
         // Handle form submission
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -598,6 +611,7 @@
 
             const formData = new FormData(loginForm);
             const email = formData.get('email').trim();
+            const name = formData.get('name').trim(); 
             const password = formData.get('password');
             const role = formData.get('role');
 
@@ -611,11 +625,12 @@
 
             try {
                 // Authenticate user
-                const result = await authenticateUser(email, password, role);
+               const result = await authenticateUser(email, name, password, role);
 
                 if (result.success) {
                     // Store user info (in real app, use secure storage)
                     localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userName', name);
                     localStorage.setItem('userRole', role);
                     
                     // Redirect based on role

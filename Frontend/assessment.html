@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HerHealth AI - Risk Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Risk Assessment Section -->
+  <div id="assessment-page" class="container page active">
+    <div class="assessment-header">
+      <button class="btn-back" onclick="goToDashboard()">
+         <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </button>
+      <h2>Risk Assessment</h2>
+      <p>Please answer the following questions honestly for accurate results</p>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressBar"></div>
+        </div>
+        <span class="progress-text" id="progressText">Step 1 of 4</span>
+      </div>
+    </div>
+
+    <div class="assessment-form">
+      <!-- Step 1 -->
+      <div class="form-step active" id="step1">
+        <div class="step-content">
+          <h3><i class="fas fa-birthday-cake"></i> What is your age?</h3>
+          <div class="input-group">
+            <select id="age" class="form-select">
+              <option value="">Select your age range</option>
+              <option value="18-25">18-25 years</option>
+              <option value="26-30">26-30 years</option>
+              <option value="31-40">31-40 years</option>
+              <option value="41-50">41-50 years</option>
+              <option value="51-60">51-60 years</option>
+              <option value="60+">60+ years</option>
+            </select>
+          </div>
+          <div class="step-navigation">
+            <button class="btn-secondary" disabled>Previous</button>
+            <button class="btn-primary" onclick="nextStep()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="form-step" id="step2">
+        <div class="step-content">
+          <h3><i class="fas fa-users"></i> Number of sexual partners in your lifetime?</h3>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="partners" value="0-1" id="partners1"><label for="partners1">0-1</label></div>
+            <div class="radio-option"><input type="radio" name="partners" value="2-3" id="partners2"><label for="partners2">2-3</label></div>
+            <div class="radio-option"><input type="radio" name="partners" value="4-6" id="partners3"><label for="partners3">4-6</label></div>
+            <div class="radio-option"><input type="radio" name="partners" value="7+" id="partners4"><label for="partners4">7+</label></div>
+          </div>
+          <div class="step-navigation">
+            <button class="btn-secondary" onclick="prevStep()">Previous</button>
+            <button class="btn-primary" onclick="nextStep()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="form-step" id="step3">
+        <div class="step-content">
+          <h3><i class="fas fa-virus"></i> Have you ever tested positive for HPV?</h3>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="hpv" value="positive" id="hpv1"><label for="hpv1">Yes, tested positive</label></div>
+            <div class="radio-option"><input type="radio" name="hpv" value="negative" id="hpv2"><label for="hpv2">No, tested negative</label></div>
+            <div class="radio-option"><input type="radio" name="hpv" value="never" id="hpv3"><label for="hpv3">Never been tested</label></div>
+            <div class="radio-option"><input type="radio" name="hpv" value="unknown" id="hpv4"><label for="hpv4">Don't know</label></div>
+          </div>
+          <div class="step-navigation">
+            <button class="btn-secondary" onclick="prevStep()">Previous</button>
+            <button class="btn-primary" onclick="nextStep()">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="form-step" id="step4">
+        <div class="step-content">
+          <h3><i class="fas fa-microscope"></i> What was your last Pap test result?</h3>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="pap" value="normal" id="pap1"><label for="pap1">Normal/Negative</label></div>
+            <div class="radio-option"><input type="radio" name="pap" value="abnormal" id="pap2"><label for="pap2">Abnormal cells detected</label></div>
+            <div class="radio-option"><input type="radio" name="pap" value="never" id="pap3"><label for="pap3">Never had a Pap test</label></div>
+            <div class="radio-option"><input type="radio" name="pap" value="overdue" id="pap4"><label for="pap4">Overdue for testing</label></div>
+          </div>
+          <div class="step-navigation">
+            <button class="btn-secondary" onclick="prevStep()">Previous</button>
+            <button class="btn-primary" onclick="calculateRisk()">Get Results</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <div id="results-page" class="container page">
+    <div class="results-header">
+      <h2>Your Risk Assessment Results</h2>
+    </div>
+
+    <div class="results-content">
+      <div class="risk-card" id="riskCard">
+        <div class="risk-icon" id="riskIcon">🌿</div>
+        <div class="risk-level" id="riskLevel">Low Risk</div>
+        <div class="risk-percentage" id="riskPercentage">15% estimated risk</div>
+        <p id="riskDescription">Great news! Your risk factors suggest a low probability of cervical cancer.</p>
+      </div>
+
+      <div class="recommendations-card">
+        <h3><i class="fas fa-lightbulb"></i> Personalized Recommendations</h3>
+        <div id="recommendationsList">
+          <!-- JS will populate -->
+        </div>
+      </div>
+
+      <div class="coverage-card">
+                    <h3><i class="fas fa-shield-alt"></i> NHIF Coverage & Costs</h3>
+                    <div class="coverage-grid">
+                        <div class="coverage-item covered">
+                            <h4>NHIF Covered Services</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Pap Smear Test - KSh 0</li>
+                                <li><i class="fas fa-check"></i> HPV Testing - KSh 0</li>
+                                <li><i class="fas fa-check"></i> Basic Consultation - KSh 0</li>
+                            </ul>
+                        </div>
+                        <div class="coverage-item additional">
+                            <h4>Additional Costs</h4>
+                            <ul>
+                                <li><i class="fas fa-info"></i> Colposcopy: KSh 3,000 - 5,000</li>
+                                <li><i class="fas fa-info"></i> Biopsy: KSh 2,000 - 4,000</li>
+                                <li><i class="fas fa-info"></i> Private consultation: KSh 1,500 - 3,000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clinic-finder">
+                    <h3><i class="fas fa-map-marker-alt"></i> Find Nearby Healthcare Providers</h3>
+                    <div class="clinics-grid">
+                        <div class="clinic-card">
+                            <h4>Nairobi Women's Hospital</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> Hurlingham, Nairobi (2.3 km)</p>
+                            <p><i class="fas fa-phone"></i> +254 20 272 2714</p>
+                            <div class="clinic-services">
+                                <span class="service-tag">Pap Smear</span>
+                                <span class="service-tag">HPV Testing</span>
+                                <span class="service-tag">NHIF</span>
+                            </div>
+                        </div>
+                        <div class="clinic-card">
+                            <h4>Kenyatta National Hospital</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> Upper Hill, Nairobi (5.1 km)</p>
+                            <p><i class="fas fa-phone"></i> +254 20 272 6300</p>
+                            <div class="clinic-services">
+                                <span class="service-tag">Pap Smear</span>
+                                <span class="service-tag">HPV Testing</span>
+                                <span class="service-tag">NHIF</span>
+                                <span class="service-tag">Oncology</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+      <div class="action-buttons">
+        <button class="btn-secondary" onclick="restartAssessment()">
+          <i class="fas fa-redo"></i> Take Assessment Again
+        </button>
+        <button class="btn-primary">
+          <i class="fas fa-calendar-plus"></i> Book Appointment
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+  function goToDashboard() {
+    // Pass a flag in the URL so we skip the login
+    window.location.href = 'patient-portal.html?fromAssessment=true';
+  }
+</script>
+
+  <script src="script.js"></script>
+</body>
+</html>
