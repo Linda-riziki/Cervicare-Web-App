@@ -4,6 +4,8 @@ let currentStep = 1;
 const totalSteps = 4;
 let formData = {};
 
+const API_BASE = 'https://cervicare-web-app-1.onrender.com';
+
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
@@ -303,7 +305,7 @@ function determineRiskLevel(score) {
 
 // Backend integration functions (placeholders for actual implementation)
 function sendDataToBackend(data, riskScore) {
-    fetch('https://cervicare-web-app-1.onrender.com/assessment', {
+    fetch(`${API_BASE}/assessment`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -378,7 +380,7 @@ function startModelTraining(modelType) {
 }
 
 function testAPIConnection() {
-    fetch('https://cervicare-web-app-1.onrender.com/assessment')
+    fetch(`${API_BASE}/assessment`)
         .then(response => response.json())
         .then(result => {
             console.log('API health check:', result);
@@ -391,7 +393,7 @@ function testAPIConnection() {
 }
 
 function predictUsingAI(data) {
-    fetch('https://cervicare-web-app-1.onrender.com/predict', {
+    fetch(`${API_BASE}/predict`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
