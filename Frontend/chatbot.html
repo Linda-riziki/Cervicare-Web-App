@@ -434,9 +434,9 @@
             <div class="nav-menu">
                  <a href="index.html#home" class="nav-link">Home</a>
                  <!-- <a href="index.html#assessment" class="nav-link">Assessment</a> -->
-                 <a href="index.html#data-tools" class="nav-link">Data Tools</a>
-                 <a href="chatbot.html" class="nav-link">AI Assistant</a>
-                 <a href="login.html" class="nav-link">Login</a>
+                <a href="chatbot.html" class="nav-link">AI Assistant</a>
+                <a href="index.html#data-tools" class="nav-link">Data Tools</a>
+                <a href="login.html" class="nav-link">Login</a>
             </div>
         </div>
     </nav>
@@ -465,7 +465,7 @@
                     </div>
                     <div>
                         <div class="message-content">
-                            Hi there! I'm your HerHealth AI assistant. How can I support your health today? I can help you with questions about cervical cancer screening, risk factors, or general women's health concerns.
+                            Hi there! I'm your HerHealth AI assistant. How can I support your health today? I can help you with questions about cervical cancer, screening,  Pap test,  HPV, risk factors, or general women's health concerns.
                         </div>
                         <div class="message-time" id="welcomeTime"></div>
                     </div>
@@ -594,7 +594,12 @@
                 
                 // Health-related responses
                 if (message.includes('cervical') || message.includes('cancer')) {
-                    return "Cervical cancer screening is very important for early detection. Regular Pap tests every 3 years (or as recommended by your doctor) can help catch abnormal cells early. Would you like information about risk factors or screening locations?";
+                    return "Cervical cancer is a type of cancer that occurs in the cells of the cervix — the lower part of the uterus that connects to the vagina. It's commonly caused by persistent infection with high-risk types of HPV (human papillomavirus). Regular screening can help detect it early.";
+                }
+
+                 // Screening
+                 if (message.includes("screening") || message.includes("check") || message.includes("test for cervical")) {
+                      return "Cervical cancer screening is crucial for early detection. Pap smears are usually recommended every 3 years for women aged 21-65. HPV tests may also be used. Early detection greatly improves treatment outcomes.";
                 }
                 
                 if (message.includes('pap') || message.includes('test')) {

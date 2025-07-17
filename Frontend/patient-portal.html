@@ -28,7 +28,8 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --gradient: linear-gradient(135deg, #fce7f3, #f3e8ff, #fed7aa);
+            --gradientA: linear-gradient(135deg, #fce7f3, #f3e8ff, #fed7aa);
+            --gradientB: linear-gradient(135deg, #f472b6, #e879f9, #fed7aa);
             --shadow: 0 10px 25px rgba(244, 114, 182, 0.15);
             --border-radius: 20px;
         }
@@ -37,7 +38,7 @@
             font-family: 'Poppins', sans-serif;
             line-height: 1.6;
             color: var(--gray-800);
-            background: var(--gradient);
+            background: var(--gradientA);
             min-height: 100vh;
         }
 
@@ -113,7 +114,7 @@
         }
 
         .btn-primary {
-            background: var(--gradient);
+            background: var(--gradientB);
             color: white;
             padding: 12px 24px;
             border: none;
@@ -429,7 +430,7 @@
         <div class="container">
             <!-- Welcome Card -->
             <div class="welcome-card">
-                <h2 id="welcomeMessage">Welcome back!</h2>
+                <h2 id="welcomeMessage">Welcome</h2>
                 <a href="assessment.html" class="btn-primary">
                  <i class="fas fa-vial"></i>
                     Start Risk Assessment
@@ -438,16 +439,16 @@
                 <p style="color: var(--gray-600); padding: 20px;">Here's your latest health summary and care plan</p>
             </div>
 
-            <!-- Risk Summary -->
-            <div class="risk-summary">
+           <!-- Risk Summary -->
+            <!-- <div class="risk-summary">
                 <h3 class="section-title">
                     <i class="fas fa-chart-pie"></i>
                     Your Risk Assessment
                 </h3>
                 <div id="riskCard" class="risk-card">
-                    <!-- Risk content will be populated by JavaScript -->
+                     Risk content will be populated by JavaScript 
                 </div>
-            </div>
+            </div> -->
 
             <!-- Care Plan -->
             <div class="care-plan">
@@ -607,29 +608,29 @@ if (fromAssessment && sessionStorage.getItem('patient')) {
             if (!currentPatient) return;
 
             // Welcome message
-            document.getElementById('welcomeMessage').textContent = `Welcome back, ${currentPatient.name}!`;
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${currentPatient.name}!`;
 
             // Risk assessment card
-            const riskCard = document.getElementById('riskCard');
-            const riskClass = currentPatient.riskLevel;
-            const riskIcon = getRiskIcon(currentPatient.riskLevel);
-            const riskColor = getRiskColor(currentPatient.riskLevel);
+            // const riskCard = document.getElementById('riskCard');
+            // const riskClass = currentPatient.riskLevel;
+            // const riskIcon = getRiskIcon(currentPatient.riskLevel);
+            // const riskColor = getRiskColor(currentPatient.riskLevel);
 
-            riskCard.className = `risk-card ${riskClass}`;
-            riskCard.innerHTML = `
-                <div class="risk-icon" style="color: ${riskColor};">
-                    <i class="${riskIcon}"></i>
-                </div>
-                <div class="risk-level" style="color: ${riskColor};">
-                    ${currentPatient.riskLevel.charAt(0).toUpperCase() + currentPatient.riskLevel.slice(1)} Risk
-                </div>
-                <div class="risk-percentage">
-                    Risk Score: ${currentPatient.riskScore}%
-                </div>
-                <p style="color: var(--gray-600); font-size: 0.9rem;">
-                    Last assessed: ${currentPatient.lastAssessment}
-                </p>
-            `;
+            // riskCard.className = `risk-card ${riskClass}`;
+            // riskCard.innerHTML = `
+            //     <div class="risk-icon" style="color: ${riskColor};">
+            //         <i class="${riskIcon}"></i>
+            //     </div>
+            //     <div class="risk-level" style="color: ${riskColor};">
+            //         ${currentPatient.riskLevel.charAt(0).toUpperCase() + currentPatient.riskLevel.slice(1)} Risk
+            //     </div>
+            //     <div class="risk-percentage">
+            //         Risk Score: ${currentPatient.riskScore}%
+            //     </div>
+            //     <p style="color: var(--gray-600); font-size: 0.9rem;">
+            //         Last assessed: ${currentPatient.lastAssessment}
+            //     </p>
+            // `;
 
             // Care plan
             const carePlanContent = document.getElementById('carePlanContent');

@@ -27,7 +27,8 @@
             --gray-800: #1f2937;
             --success: #10b981;
             --error: #ef4444;
-            --gradient: linear-gradient(135deg, #fce7f3, #f3e8ff, #fed7aa);
+            --gradientA: linear-gradient(135deg, #fce7f3, #f3e8ff, #fed7aa);
+            --gradientB: linear-gradient(135deg, #f472b6, #e879f9, #fed7aa);
             --shadow: 0 10px 25px rgba(244, 114, 182, 0.15);
             --border-radius: 20px;
         }
@@ -36,7 +37,7 @@
             font-family: 'Poppins', sans-serif;
             line-height: 1.6;
             color: var(--gray-800);
-            background: var(--gradient);
+            background: var(--gradientA);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -70,7 +71,7 @@
             gap: 10px;
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--soft-pink);
+            color: var(--primary-pink);
         }
 
         .nav-menu {
@@ -240,7 +241,7 @@
         .btn-login {
             width: 100%;
             padding: 14px 24px;
-            background: var(--gradient);
+            background: var(--gradientB);
             color: white;
             border: none;
             border-radius: 12px;
@@ -412,9 +413,9 @@
             <div class="nav-menu">
                  <a href="index.html#home" class="nav-link">Home</a>
                  <!-- <a href="index.html#assessment" class="nav-link">Assessment</a> -->
+                  <a href="chatbot.html" class="nav-link">AI Assistant</a>
                  <a href="index.html#data-tools" class="nav-link">Data Tools</a>
-                 <a href="chatbot.html" class="nav-link">AI Assistant</a>
-                 <a href="login.html" class="nav-link">Login</a>
+                <a href="login.html" class="nav-link">Login</a>
             </div>
         </div>
     </nav>
