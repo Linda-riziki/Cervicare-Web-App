@@ -21,10 +21,11 @@
             <i class="fas fa-bars"></i>
             </button>
             <div class="nav-menu">
-                <a href="#" class="nav-link" onclick="showPage('home')">Home</a>
-                <a href="#" class="nav-link" onclick="showPage('assessment')">Assessment</a>
-                <a href="#" class="nav-link" onclick="showPage('data-tools')">Data Tools</a>
-                <a href="chatbot.html" class="nav-link">AI Assistant</a>
+                <a href="index.html#home" class="nav-link" onclick="showPage('home')">Home</a>
+                <!-- <a href="index.html#assessment" class="nav-link" onclick="showPage('assessment')">Assessment</a> -->
+                 <a href="chatbot.html" class="nav-link">AI Assistant</a>
+                <a href="index.html#data-tools" class="nav-link" onclick="showPage('data-tools')">Data Tools</a>
+                <a href="login.html" class="nav-link">Login</a>
             </div>
         </div>
     </nav>
@@ -41,10 +42,10 @@
                     <h1>Welcome to <span class="highlight">HerHealth AI</span></h1>
                     <p class="hero-subtitle">Predict Your Cervical Cancer Risk with Confidence</p>
                     <p class="hero-description">Take a simple 3-minute assessment to understand your health risks and get personalized recommendations.</p>
-                    <button class="btn-primary" onclick="startAssessment()">
+                    <a href="login.html" class="btn-primary">
                         <i class="fas fa-play"></i>
-                        Start Risk Assessment
-                    </button>
+                         Start Risk Assessment
+                    </a>
                     <div class="hero-features">
                         <div class="feature">
                             <i class="fas fa-check"></i>
@@ -95,7 +96,7 @@
     </div>
 
     <!-- Assessment Page -->
-    <div id="assessment-page" class="page">
+    <!-- <div id="assessment-page" class="page">
         <div class="container">
             <div class="assessment-header">
                 <button class="btn-back" onclick="showPage('home')">
@@ -113,7 +114,7 @@
             </div>
 
             <div class="assessment-form">
-                <!-- Step 1: Age -->
+                <!-- Step 1: Age 
                 <div class="form-step active" id="step1">
                     <div class="step-content">
                         <h3><i class="fas fa-birthday-cake"></i> What is your age?</h3>
@@ -135,7 +136,7 @@
                     </div>
                 </div>
 
-                <!-- Step 2: Sexual Partners -->
+                <!-- Step 2: Sexual Partners 
                 <div class="form-step" id="step2">
                     <div class="step-content">
                         <h3><i class="fas fa-users"></i> Number of sexual partners in your lifetime?</h3>
@@ -164,7 +165,7 @@
                     </div>
                 </div>
 
-                <!-- Step 3: HPV History -->
+                <!-- Step 3: HPV History 
                 <div class="form-step" id="step3">
                     <div class="step-content">
                         <h3><i class="fas fa-virus"></i> Have you ever tested positive for HPV?</h3>
@@ -193,7 +194,7 @@
                     </div>
                 </div>
 
-                <!-- Step 4: Pap Test -->
+                <!-- Step 4: Pap Test 
                 <div class="form-step" id="step4">
                     <div class="step-content">
                         <h3><i class="fas fa-microscope"></i> What was your last Pap test result?</h3>
@@ -225,7 +226,7 @@
         </div>
     </div>
 
-    <!-- Results Page -->
+    <!-- Results Page 
     <div id="results-page" class="page">
         <div class="container">
             <div class="results-header">
@@ -243,7 +244,7 @@
                 <div class="recommendations-card">
                     <h3><i class="fas fa-lightbulb"></i> Personalized Recommendations</h3>
                     <div id="recommendationsList">
-                        <!-- Recommendations will be populated by JavaScript -->
+                        <!-- Recommendations will be populated by JavaScript 
                     </div>
                 </div>
 
@@ -306,7 +307,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Data Tools Page -->
     <div id="data-tools-page" class="page">
