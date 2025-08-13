@@ -4,7 +4,7 @@ let currentStep = 1;
 const totalSteps = 4;
 let formData = {};
 
-const API_BASE = 'https://cervicare-web-app-1.onrender.com';
+const API_BASE = 'https://cervicare-web-app-i4u2.onrender.com';
 
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(page => {
